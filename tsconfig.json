@@ -1,0 +1,13 @@
+// prisma-suggested tsconfig:
+
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "lib": [
+      "esnext"
+    ],
+    "esModuleIterop": true
+  }
+}
