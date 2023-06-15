@@ -8,6 +8,6 @@
     "lib": [
       "esnext"
     ],
-    "esModuleIterop": true
+    "esModuleInterop": true
   }
 }

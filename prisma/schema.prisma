@@ -14,16 +14,16 @@ model User {
   id             String          @id @default(uuid())
   name           String
   email          String          @unique
-  password       String
+  password       String?
   puzzleAttempts PuzzleAttempt[]
 }
 
 model Puzzle {
-  id            String          @id @default(uuid())
-  difficulty    Difficulty
-  unsolved      BigInt
-  solved        BigInt
-  puzzleAttemps PuzzleAttempt[]
+  id             String          @id @default(uuid())
+  difficulty     Difficulty
+  unsolved       String          @unique
+  solved         String          @unique
+  puzzleAttempts PuzzleAttempt[]
 }
 
 // track puzzle attempts by each user
