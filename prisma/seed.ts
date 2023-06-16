@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import { add } from 'date-fns'
+import { add, differenceInSeconds } from 'date-fns'
+
+import { seedPuzzles } from '../seedPuzzles';
 
 const prisma = new PrismaClient();
 
@@ -17,23 +19,47 @@ async function main() {
   })
   console.log(user)
 
-  const puzzle = await prisma.puzzle.create({
-    data: {
-      difficulty: 'HARD',
-      unsolved: '070000043040009610800634900094052000358460020000800530080070091902100005007040802',
-      solved: '679518243543729618821634957794352186358461729216897534485276391962183475137945862',
-      puzzleAttempts: {
-        create: {
-          user: { connect: { id: user.id } },
-          startTime: new Date(),
-          endTime: add(new Date(), { minutes: 20 }),
-          isSolved: false,
-        }
+  const startTime = new Date();
+  const endTime = add(new Date(), { minutes: 20 });
+
+  for (let puzzle of seedPuzzles) {
+    await prisma.puzzle.create({
+      data: {
+        difficulty: puzzle.difficulty,
+        unsolved: puzzle.unsolved,
+        solved: puzzle.solved,
       }
-    },
-    include: { puzzleAttempts: true }
+    })
+  }
+
+  // const puzzle = await prisma.puzzle.create({
+  //   data: {
+  //     difficulty: 'HARD',
+  //     unsolved: '070000043040009610800634900094052000358460020000800530080070091902100005007040802',
+  //     solved: '679518243543729618821634957794352186358461729216897534485276391962183475137945862',
+  //     puzzleAttempts: {
+  //       create: {
+  //         user: { connect: { id: user.id } },
+  //         startTime,
+  //         endTime,
+  //         secondsToSolve: differenceInSeconds(endTime, startTime),
+  //         isSolved: false,
+  //       }
+  //     }
+  //   },
+  //   include: { puzzleAttempts: true }
+  // });
+  // console.log(puzzle)
+
+  const results = await prisma.puzzleAttempt.aggregate({
+    where: { userId: user.id },
+    _avg: { secondsToSolve: true },
+    _max: { secondsToSolve: true },
+    _min: { secondsToSolve: true },
+    _count: true, 
   });
-  console.log(puzzle)
+
+  console.log(results)
 
 }
 
