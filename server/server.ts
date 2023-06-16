@@ -1,10 +1,13 @@
 import express, {Request, Response, NextFunction} from 'express';
 import {userRouter} from './routes/user.router';
 import {puzzleRouter} from './routes/puzzle.router';
+const cors = require('cors');
 
 const app = express();
 
-
+app.use(cors({
+  origin: 'http://localhost:3000'
+}))
 
 
 /** ----------------- EXPRESS ROUTES ----------------- **/
