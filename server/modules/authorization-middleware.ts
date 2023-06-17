@@ -1,0 +1,1 @@
+// can contain rejectUnauthorized, a middleware function to check if a user has the right credentials to access a route

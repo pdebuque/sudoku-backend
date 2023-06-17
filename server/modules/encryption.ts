@@ -2,14 +2,14 @@ const bcrypt = require('bcryptjs');
 
 const SALT_WORK_FACTOR = 10; // This determines how secure the salt should be
 
-const encryptPassword = (password: string) => {
+export const encryptPassword = (password: string) => {
   const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR); // This generates a random salt
   // This next line hashes the user password and the random salt
   // this salt and hash (and not the actual password) will then get stored in the database
   return bcrypt.hashSync(password, salt);
 };
 
-const comparePassword = (candidatePassword: string, storedPassword: string) => {
+export const comparePassword = (candidatePassword: string, storedPassword: string) => {
   /*
   This takes in the candidate password (what the user entered) to check it.
   The stored password has the original salt, so it will run the
@@ -20,7 +20,7 @@ const comparePassword = (candidatePassword: string, storedPassword: string) => {
   return bcrypt.compareSync(candidatePassword, storedPassword);
 };
 
-module.exports = {
-  encryptPassword,
-  comparePassword,
-};
+// module.exports = {
+//   encryptPassword,
+//   comparePassword,
+// };
